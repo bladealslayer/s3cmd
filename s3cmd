@@ -648,6 +648,9 @@ def cmd_sync_remote2remote(args):
         extra_headers = copy(cfg.extra_headers)
         try:
             response = s3.object_copy(src_uri, dst_uri, extra_headers)
+            if response['status'] == 412:
+                output("Skipping file %s" % src_uri)
+                continue
             output("File %(src)s copied to %(dst)s" % { "src" : src_uri, "dst" : dst_uri })
         except S3Error, e:
             error("File %(src)s could not be copied: %(e)s" % { "src" : src_uri, "e" : e })
