@@ -418,6 +418,13 @@ class S3(object):
             headers["x-amz-storage-class"] = "REDUCED_REDUNDANCY"
         if extra_headers:
           headers.update(extra_headers)
+
+        # Sync public ACL
+        if self.config.acl_copy_public:
+            acl = self.get_acl(src_uri)
+            if acl.isAnonRead():
+                headers["x-amz-acl"] = "public-read"
+        
         request = self.create_request("OBJECT_PUT", uri = dst_uri, headers = headers)
         try:
             response = self.send_request(request)

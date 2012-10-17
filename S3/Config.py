@@ -34,6 +34,7 @@ class Config(object):
     skip_existing = False
     recursive = False
     acl_public = None
+    acl_copy_public = False
     acl_grants = []
     acl_revokes = []
     proxy_host = ""
